@@ -1,15 +1,18 @@
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator} from 'react-navigation-stack';
-import StartScreen from './src/screens/StartScreen';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+import LoginScreen from './src/screens/LoginScreen';
 
-const navigator = createStackNavigator({
-  Start: StartScreen,
-}, 
-{
-    initialRouteName: 'Start',
+const navigator = createStackNavigator(
+  {
+    Login: LoginScreen,
+  },
+  {
+    initialRouteName: 'Login',
     defaultNavigationOptions: {
-      title: 'MatchPoint'
-  }
-});
+      //title: 'MatchPoint',
+      headerShown: false,
+    },
+  },
+);
 
 export default createAppContainer(navigator);
