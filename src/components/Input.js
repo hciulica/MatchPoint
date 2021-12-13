@@ -1,16 +1,23 @@
 import {useLinkProps} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, TextInput, View, Text} from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
 
-const Input = ({title, password, style}) => {
+const Input = ({title, password, style, eyevisible}) => {
   return (
     <View>
       <Text style={styles.text}>{title}</Text>
-      <TextInput
-        style={styles.input}
-        placeholderTextColor={'darkgray'}
-        secureTextEntry={password}
-      />
+      <View>
+        {/* <Feather name = "eye" style = {styles.showeye}/> */}
+          <TextInput
+            style={styles.input}
+            placeholderTextColor={'darkgray'}
+            secureTextEntry={password}
+          />
+      </View>
+      {/* <Feather name = "eye" style={styles.showeye}/> */}
+      {/* <Feather name = "eye-off"/> */}
+      
     </View>
   );
 };
@@ -33,6 +40,12 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
   },
+  showeye:{
+    fontSize: 30,
+    marginLeft: 330,
+    borderRadius: 50
+  },
+  
 });
 
 export default Input;
