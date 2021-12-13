@@ -36,7 +36,7 @@ const LoginScreen = ({navigation}) => {
         containerStyle={styles.registerContainer}
         textStyle={styles.registerText}
         title={"I don't have an account"}
-        onPress={() => {}}
+        onPress={() => navigation.navigate('Register')}
       />
     </View>
   );

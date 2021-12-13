@@ -14,7 +14,7 @@ const Toogle = ({title, onPress}) => {
         onValueChange={toggleSwitch}
         value={isEnabled}
       />
-      <Text style={styles.text}>Remeber me</Text>
+      <Text style={styles.text}>Remember me</Text>
     </View>
   );
 };
