@@ -1,23 +1,27 @@
 import React, {useState} from 'react';
 import {useLinkProps} from '@react-navigation/native';
-import { Text,StyleSheet,View, Button,TouchableOpacity,Switch,} from 'react-native';
+import { Text,StyleSheet,View, Button,TouchableOpacity,Switch,TextInput} from 'react-native';
 import {createKeyboardAwareNavigator} from 'react-navigation';
 import Input from '../components/Input';
 import ButtonAuthentication from '../components/ButtonAuthentication';
 import TextButton from '../components/TextButton';
 import Toogle from '../components/Toogle';
+import Feather from 'react-native-vector-icons/Feather';
 
-const RegisterScreen = ({navigation}) => {
+const RegisterScreen = ({navigation, iconshow}) => {
   return (
     <View>
         <Text style={styles.loginText}>Register</Text>
         <Text style={styles.subText}>Create your account</Text>
-        <Input title="YOUR NAME" placeholder={'Password'} password={false} />
-        <Input title="EMAIL" placeholder={'Password'} password={false} />
-        <Input
-             title="PASSWORD" placeholder={'Password'} password={true} eyevisible={true}>
-        </Input>
-        <Input title="CONFIRM PASSWORD" placeholder={'Password'} password={true}></Input>
+        <Input title="YOUR NAME" placeholder={'Password'} passwordfield={false} />
+        <Input title="EMAIL" placeholder={'Password'} passwordfield={false}/>
+        <View>
+            <Input style = {styles.passwordShow }
+                title="PASSWORD" placeholder={'Password'} iconshow={true}>
+            </Input>
+        </View>
+        <Input title="CONFIRM PASSWORD" placeholder={'Password'} iconshow={false}></Input> 
+        
         <ButtonAuthentication title={'Register'} onPress={() => {}} />
         <TextButton
             containerStyle={styles.registerContainer}
@@ -30,6 +34,11 @@ const RegisterScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+   passwordShow: {
+        fontSize: 30,
+        paddingLeft: 320,
+        borderColor: 'red'
+   },
   //Login Header
   loginText: {
     marginHorizontal: 20,

@@ -19,8 +19,8 @@ const LoginScreen = ({navigation}) => {
     <View>
       <Text style={styles.loginText}>Login</Text>
       <Text style={styles.subText}>Sign to your account</Text>
-      <Input title="YOUR EMAIL" placeholder={'Password'} password={false} />
-      <Input title="PASSWORD" placeholder={'Password'} password={true}></Input>
+      <Input title="YOUR EMAIL" placeholder={'Password'} passwordfield={false} />
+      <Input title="PASSWORD" placeholder={'Password'} iconshow={true} passwordfield={true}></Input>
       <View style={styles.viewStyle}>
         <Toogle />
         <TextButton
