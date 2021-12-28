@@ -8,9 +8,11 @@ import TextButton from '../components/TextButton';
 import Toogle from '../components/Toogle';
 import Feather from 'react-native-vector-icons/Feather';
 
+var {Platform} = React;
+
 const RegisterScreen = ({navigation, iconshow}) => {
   return (
-    <View>
+    <View style = {styles.iosRegisterPart}> 
         <Text style={styles.loginText}>Register</Text>
         <Text style={styles.subText}>Create your account</Text>
         <Input title="YOUR NAME" placeholder={'Password'} passwordfield={false} />
@@ -34,6 +36,9 @@ const RegisterScreen = ({navigation, iconshow}) => {
 };
 
 const styles = StyleSheet.create({
+  iosRegisterPart:{
+    marginTop: (Platform.OS === 'ios') ? 50 : null
+  },
    passwordShow: {
         fontSize: 30,
         paddingLeft: 320,
