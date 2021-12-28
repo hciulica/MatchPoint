@@ -22,8 +22,8 @@ const LoginScreen = ({navigation}) => {
     <View style={styles.iosLoginPart}>
       <Text style={styles.loginText}>Login</Text>
       <Text style={styles.subText}>Sign to your account</Text>
-      <Input title="YOUR EMAIL" placeholder={'Password'} password={false} />
-      <Input title="PASSWORD" placeholder={'Password'} password={true}></Input>
+      <Input title="YOUR EMAIL" placeholder={'Password'} passwordfield={false} />
+      <Input title="PASSWORD" placeholder={'Password'} iconshow={true} passwordfield={true}></Input>
       <View style={styles.viewStyle}>
         <Toogle />
         <TextButton
@@ -39,7 +39,7 @@ const LoginScreen = ({navigation}) => {
         containerStyle={styles.registerContainer}
         textStyle={styles.registerText}
         title={"I don't have an account"}
-        onPress={() => {}}
+        onPress={() => navigation.navigate('Register')}
       />
     </View>
   );
