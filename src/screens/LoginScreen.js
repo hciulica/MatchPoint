@@ -14,9 +14,12 @@ import ButtonAuthentication from '../components/ButtonAuthentication';
 import TextButton from '../components/TextButton';
 import Toogle from '../components/Toogle';
 
+var {Platform} = React;
+
+
 const LoginScreen = ({navigation}) => {
   return (
-    <View>
+    <View style={styles.iosLoginPart}>
       <Text style={styles.loginText}>Login</Text>
       <Text style={styles.subText}>Sign to your account</Text>
       <Input title="YOUR EMAIL" placeholder={'Password'} password={false} />
@@ -44,6 +47,9 @@ const LoginScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   //Login Header
+  iosLoginPart: {
+    marginTop: (Platform.OS === 'ios') ? 50 : null,
+  },
   loginText: {
     marginHorizontal: 20,
     fontSize: 22,
