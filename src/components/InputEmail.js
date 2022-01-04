@@ -4,10 +4,10 @@ import {StyleSheet, TextInput, View, Text} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 
-const Input = ({title, passwordfield, iconshow, emailset, passwordset}) => {
+const InputEmail = ({title, passwordfield, iconshow, emailinp, passwordinp}) => {
 
   const [isSecureEntry, setIsSecureEntry] = useState(true);
-
+  
   //console.log(isSecureEntry);
   return (
     <View>
@@ -19,6 +19,9 @@ const Input = ({title, passwordfield, iconshow, emailset, passwordset}) => {
             secureTextEntry={passwordfield === false ? !isSecureEntry : isSecureEntry}
             autoCapitalize="none"
             autoCorrect={false}
+            value = {emailinp}
+            onChangeText={newValue => setEmail(newValue)}
+
           />
 
           {iconshow ? 
@@ -86,4 +89,4 @@ const styles = StyleSheet.create({
   
 });
 
-export default Input;
+export default InputEmail;
