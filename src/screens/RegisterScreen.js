@@ -14,17 +14,37 @@ import ButtonAuthentication from '../components/ButtonAuthentication';
 import TextButton from '../components/TextButton';
 import Feather from 'react-native-vector-icons/Feather';
 import {auth} from '../api/firebase/';
+import { firestore1 } from '../api/firebase';
 import {} from 'firebase/auth';
 
 var {Platform} = React;
 
+
 const RegisterScreen = ({navigation, iconshow}) => {
-  const [isSecureEntry, setIsSecureEntry] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [cpassword, setcPassword] = useState('');
+  const [username, setUsername] = useState('');
+
+
+ const GetData = (emailfirestore, usernamefirestore) => {
+
+  firestore1
+  .collection('users')
+  .add({
+    email: emailfirestore,
+    name: usernamefirestore
+  })
+  .then(() => {
+    console.log('User added!');
+  })
+  .catch((error) => {
+    console.log("Something went wrong");
+  })
+};
 
   const handleSignUp = () => {
+    let noerror = false;
     if (password !== cpassword) {
       alert('Passwords do not match.');
     } else {
@@ -34,17 +54,23 @@ const RegisterScreen = ({navigation, iconshow}) => {
           const user = userCredentials.user;
           console.log(user.email);
         })
-        .catch(error => alert(error.message));
-
-      console.log('Email:', email);
-      console.log('Password:', password);
+        .catch(error => {alert(error.message) });
+      
+        GetData(email.trim(), username);
+        console.log('Email:', email);
+        console.log('Password:', password);
+      
     }
   };
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.loginText}>Register</Text>
       <Text style={styles.subText}>Create your account</Text>
-      <Input title="YOUR NAME" passwordfield={false} iconshow={false} />
+      <Input 
+        title="YOUR NAME" 
+        passwordfield={false} 
+        iconshow={false}
+        onChangeText={newValue => setUsername(newValue)} />
       <Input
         title="EMAIL"
         passwordfield={false}

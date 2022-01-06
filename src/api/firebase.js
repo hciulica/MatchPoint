@@ -1,6 +1,9 @@
 // Import the functions you need from the SDKs you need
 import * as firebase from "firebase";
-import { } from 'firebase/auth'
+import { } from 'firebase/auth';
+import { getFirestore } from "firebase";
+import firestore from "@react-native-firebase/firestore"
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -23,8 +26,13 @@ if (firebase.apps.length === 0)
     app = firebase.app();
 }
 
+
 const auth = firebase.auth();
+const firestore1 = firebase.firestore();   
 
-console.log(auth);
+// const db = firestore.authDomain();
 
-export { auth }
+console.log(auth, firestore1);
+
+
+export { auth, firestore1 }
