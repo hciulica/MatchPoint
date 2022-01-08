@@ -8,60 +8,69 @@ import {
   TouchableOpacity,
   Switch,
   ScrollView,
+  
 } from 'react-native';
 import Input from '../components/Input';
 import ButtonAuthentication from '../components/ButtonAuthentication';
 import TextButton from '../components/TextButton';
 import Feather from 'react-native-vector-icons/Feather';
-import {auth} from '../api/firebase/';
-import { firestore1 } from '../api/firebase';
-import {} from 'firebase/auth';
+import { authentication } from '../api/firebase';
+import { db } from '../api/firebase';
+import { createUserWithEmailAndPassword, setPersistence, signInWithEmailAndPassword, signOut } from '@firebase/auth';
+import { collection, getDocs, setDoc, doc, addDoc } from 'firebase/firestore/lite';
+import useAuthentication from '../hooks/useAuthentication';
+import { withNavigation } from 'react-navigation';
 
 var {Platform} = React;
-
 
 const RegisterScreen = ({navigation, iconshow}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [cpassword, setcPassword] = useState('');
   const [username, setUsername] = useState('');
+  const [uidUser, setuidUser] = useState("");
+  
+  let data = { uid : 'test' };
 
+  const [setSignedIn, getSignedIn, isSignedIn] = useAuthentication();
 
- const GetData = (emailfirestore, usernamefirestore) => {
-
-  firestore1
-  .collection('users')
-  .add({
-    email: emailfirestore,
-    name: usernamefirestore
-  })
-  .then(() => {
-    console.log('User added!');
-  })
-  .catch((error) => {
-    console.log("Something went wrong");
-  })
-};
+  const getAuthenticationSign = () => {
+    console.log('UID-ul nou setat e :', data.uid);
+  }
 
   const handleSignUp = () => {
-    let noerror = false;
     if (password !== cpassword) {
       alert('Passwords do not match.');
     } else {
-      auth
-        .createUserWithEmailAndPassword(email.trim(), password)
-        .then(userCredentials => {
-          const user = userCredentials.user;
-          console.log(user.email);
+      createUserWithEmailAndPassword(authentication, email.trim(), password)
+      .then((re) => {
+          console.log(re);
+          const user = re.user;
+          setUserFirestore(username, user.uid);
+          data.uid = user.uid;
+          navigation.navigate('Home', { user_uid: data.uid })
         })
-        .catch(error => {alert(error.message) });
-      
-        GetData(email.trim(), username);
-        console.log('Email:', email);
-        console.log('Password:', password);
-      
+        .catch((error,re) => {alert(error.message);
+          console.log(re);
+        });          
     }
   };
+
+  const setUserFirestore = (usernamefirestore, uidfirestore) => {
+     setDoc(doc(db, "users", uidfirestore), {
+       name: usernamefirestore
+     });
+   }
+
+
+  // const getDataFirestore = async () => {
+  //   const citiesCol = collection(db, 'cities');
+  //   const citySnapShot = await getDocs(citiesCol);
+  //   const cityList = citySnapShot.docs.map(doc => doc.data());
+    
+  //   console.log(cityList);
+  // }
+  
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.loginText}>Register</Text>
@@ -89,8 +98,9 @@ const RegisterScreen = ({navigation, iconshow}) => {
         iconshow={false}
         onChangeText={newValue => setcPassword(newValue)}
       />
-
-      <ButtonAuthentication title={'Register'} onPress={handleSignUp} />
+    
+      <ButtonAuthentication title={'Register'} onPress={handleSignUp}
+      />
       <TextButton
         containerStyle={styles.registerContainer}
         textStyle={styles.registerText}

@@ -16,6 +16,10 @@ import Feather from 'react-native-vector-icons/Feather';
 import {auth} from '../api/firebase/';
 import {} from 'firebase/auth';
 import Toogle from '../components/Toogle';
+import { authentication } from '../api/firebase';
+import { db } from '../api/firebase';
+import { signInWithEmailAndPassword, signOut } from '@firebase/auth';
+import { collection, getDocs, setDoc, doc, addDoc } from 'firebase/firestore/lite';
 
 var {Platform} = React;
 
@@ -24,12 +28,15 @@ const LoginScreen = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [isSecureEntry, setIsSecureEntry] = useState(true);
 
+  let data = { uid : 'test' };
+
   const handleLogin = () => {
-    auth
-      .signInWithEmailAndPassword(email.trim(), password)
-      .then(userCredentials => {
-        const user = userCredentials.user;
-        console.log('Logged in with:', user.email);
+    signInWithEmailAndPassword(authentication, email.trim(), password)
+      .then(re => {
+        console.log(re);
+        const user = re.user;
+        data.uid = user.uid;
+        navigation.navigate('Home', { user_uid: data.uid })
       })
       .catch(error => alert(error.message));
   };
