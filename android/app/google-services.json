@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "66342459742",
+    "firebase_url": "https://matchpoint-5fb9c-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "matchpoint-5fb9c",
+    "storage_bucket": "matchpoint-5fb9c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:66342459742:android:1ca226f7d5dd7ecc12d7cf",
+        "android_client_info": {
+          "package_name": "com.foodapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "66342459742-171i9m0681b31e49slkuq3t4fg8r58vb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGQ9Yor78HIa-EF5fD9x32uGMXSvHrFkw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "66342459742-171i9m0681b31e49slkuq3t4fg8r58vb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "66342459742-0gsksd5vckphduk4eoa8iiuvjcj6mj66.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.matchpoint"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
