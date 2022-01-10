@@ -1,22 +1,15 @@
 import {createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
-import LoginScreen from './src/screens/LoginScreen';
-import RegisterScreen from './src/screens/RegisterScreen';
-import HomeScreen from './src/screens/HomeScreen';
+import {createStackNavigator} from 'react-navigation/stack';
+import {AuthProvider} from './src/navigation/AuthProvider';
+import Routes from './src/navigation/Routes';
+import React, {useState, useEffect} from 'react';
 
-const navigator = createStackNavigator(
-  {
-    Login: LoginScreen,
-    Register: RegisterScreen,
-    Home: HomeScreen
-  },
-  {
-    initialRouteName: 'Login',
-    defaultNavigationOptions: {
-      //title: 'MatchPoint',
-      headerShown: false,
-    },
-  },
-);
+const App = () => {
+  return (
+    <AuthProvider>
+      <Routes />
+    </AuthProvider>
+  );
+};
 
-export default createAppContainer(navigator);
+export default App;

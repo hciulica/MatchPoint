@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   Text,
   TextInput,
@@ -13,13 +13,8 @@ import Input from '../components/Input';
 import ButtonAuthentication from '../components/ButtonAuthentication';
 import TextButton from '../components/TextButton';
 import Feather from 'react-native-vector-icons/Feather';
-import {auth} from '../api/firebase/';
-import {} from 'firebase/auth';
 import Toogle from '../components/Toogle';
-import { authentication } from '../api/firebase';
-import { db } from '../api/firebase';
-import { signInWithEmailAndPassword, signOut } from '@firebase/auth';
-import { collection, getDocs, setDoc, doc, addDoc } from 'firebase/firestore/lite';
+import {AuthContext} from '../navigation/AuthProvider';
 
 var {Platform} = React;
 
@@ -28,27 +23,7 @@ const LoginScreen = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [isSecureEntry, setIsSecureEntry] = useState(true);
 
-  let data = { uid : 'test' };
-
-  const handleLogin = () => {
-    signInWithEmailAndPassword(authentication, email.trim(), password)
-      .then(re => {
-        console.log(re);
-        const user = re.user;
-        data.uid = user.uid;
-        navigation.navigate('Home', { user_uid: data.uid })
-      })
-      .catch(error => alert(error.message));
-  };
-
-  const handleForgotPassword = () => {
-    auth
-      .sendPasswordResetEmail(email.trim())
-      .then(() => {
-        alert('Reset email has been sent to ' + email);
-      })
-      .catch(error => alert(error.message));
-  };
+  const {handleLogin, handleForgotPassword} = useContext(AuthContext);
 
   return (
     <ScrollView style={styles.iosLoginPart}>
@@ -74,11 +49,14 @@ const LoginScreen = ({navigation}) => {
           containerStyle={styles.forgotPasswordContainer}
           textStyle={styles.forgotPasswordText}
           title={'Forgot password?'}
-          onPress={handleForgotPassword}
+          onPress={() => handleForgotPassword(email)}
         />
       </View>
 
-      <ButtonAuthentication title={'Login'} onPress={handleLogin} />
+      <ButtonAuthentication
+        title={'Login'}
+        onPress={() => handleLogin(email, password)}
+      />
       <TextButton
         containerStyle={styles.registerContainer}
         textStyle={styles.registerText}
