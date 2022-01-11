@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   Text,
   TextInput,
@@ -8,19 +8,13 @@ import {
   TouchableOpacity,
   Switch,
   ScrollView,
-  
 } from 'react-native';
 import Input from '../components/Input';
 import ButtonAuthentication from '../components/ButtonAuthentication';
 import TextButton from '../components/TextButton';
 import Feather from 'react-native-vector-icons/Feather';
-import { authentication } from '../api/firebase';
-import { db } from '../api/firebase';
-import { createUserWithEmailAndPassword, setPersistence, signInWithEmailAndPassword, signOut } from '@firebase/auth';
-import { collection, getDocs, setDoc, doc, addDoc } from 'firebase/firestore/lite';
-import useAuthentication from '../hooks/useAuthentication';
-import { withNavigation } from 'react-navigation';
-
+import {withNavigation} from 'react-navigation';
+import {AuthContext} from '../navigation/AuthProvider';
 var {Platform} = React;
 
 const RegisterScreen = ({navigation, iconshow}) => {
@@ -28,58 +22,19 @@ const RegisterScreen = ({navigation, iconshow}) => {
   const [password, setPassword] = useState('');
   const [cpassword, setcPassword] = useState('');
   const [username, setUsername] = useState('');
-  const [uidUser, setuidUser] = useState("");
-  
-  let data = { uid : 'test' };
+  const [uidUser, setuidUser] = useState('');
+  const {handleSignUp} = useContext(AuthContext);
 
-  const [setSignedIn, getSignedIn, isSignedIn] = useAuthentication();
-
-  const getAuthenticationSign = () => {
-    console.log('UID-ul nou setat e :', data.uid);
-  }
-
-  const handleSignUp = () => {
-    if (password !== cpassword) {
-      alert('Passwords do not match.');
-    } else {
-      createUserWithEmailAndPassword(authentication, email.trim(), password)
-      .then((re) => {
-          console.log(re);
-          const user = re.user;
-          setUserFirestore(username, user.uid);
-          data.uid = user.uid;
-          navigation.navigate('Home', { user_uid: data.uid })
-        })
-        .catch((error,re) => {alert(error.message);
-          console.log(re);
-        });          
-    }
-  };
-
-  const setUserFirestore = (usernamefirestore, uidfirestore) => {
-     setDoc(doc(db, "users", uidfirestore), {
-       name: usernamefirestore
-     });
-   }
-
-
-  // const getDataFirestore = async () => {
-  //   const citiesCol = collection(db, 'cities');
-  //   const citySnapShot = await getDocs(citiesCol);
-  //   const cityList = citySnapShot.docs.map(doc => doc.data());
-    
-  //   console.log(cityList);
-  // }
-  
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.loginText}>Register</Text>
       <Text style={styles.subText}>Create your account</Text>
-      <Input 
-        title="YOUR NAME" 
-        passwordfield={false} 
+      <Input
+        title="YOUR NAME"
+        passwordfield={false}
         iconshow={false}
-        onChangeText={newValue => setUsername(newValue)} />
+        onChangeText={newValue => setUsername(newValue)}
+      />
       <Input
         title="EMAIL"
         passwordfield={false}
@@ -98,8 +53,10 @@ const RegisterScreen = ({navigation, iconshow}) => {
         iconshow={false}
         onChangeText={newValue => setcPassword(newValue)}
       />
-    
-      <ButtonAuthentication title={'Register'} onPress={handleSignUp}
+
+      <ButtonAuthentication
+        title={'Register'}
+        onPress={() => handleSignUp(email, password, username, cpassword)}
       />
       <TextButton
         containerStyle={styles.registerContainer}
