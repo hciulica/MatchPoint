@@ -16,9 +16,11 @@ const Routes = () => {
   useEffect(() => {
     const subscriber = onAuthStateChanged(authentication, user => {
       if (user) {
-        console.log('DADA');
         setUser(user.uid);
         setUserLogged(user ? true : false);
+      } else {
+        setUserLogged(user ? true : false);
+        setUser(null);
       }
     });
     return subscriber;

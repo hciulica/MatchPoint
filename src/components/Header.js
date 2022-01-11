@@ -1,0 +1,70 @@
+import React from 'react';
+import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+
+const Header = ({pictureSource, cityLocation}) => {
+  return (
+    <View style={styles.header}>
+      <Image
+        source={require('../assets/logo.png')}
+        resizeMode="contain"
+        style={styles.logo}
+      />
+      <View>
+        <Text style={styles.currentlocation}>Current Location</Text>
+        <View style={styles.locationView}>
+          <Image
+            source={require('../assets/locationPin.png')}
+            resizeMode="contain"
+            style={styles.locationPin}
+          />
+          <Text style={styles.currentlocationCity}>Timisoara</Text>
+        </View>
+      </View>
+      <Image
+        source={require('../assets/profilePicture.jpg')}
+        style={styles.profilePicture}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  header: {
+    width: '100%',
+    height: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'transparent',
+    paddingTop: 10,
+  },
+  locationPin: {
+    width: 15,
+    height: 15,
+  },
+  logo: {
+    width: 40,
+    height: 40,
+  },
+  currentlocation: {
+    color: '#B4B4B4',
+  },
+  currentlocationCity: {
+    marginLeft: 5,
+    color: '#323232',
+  },
+  profilePicture: {
+    height: 50,
+    width: 50,
+    resizeMode: 'cover',
+    borderRadius: 7,
+  },
+  locationView: {
+    flexDirection: 'row',
+    marginTop: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+export default Header;

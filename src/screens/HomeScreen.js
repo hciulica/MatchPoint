@@ -13,18 +13,9 @@ import Input from '../components/Input';
 import ButtonAuthentication from '../components/ButtonAuthentication';
 import TextButton from '../components/TextButton';
 import Feather from 'react-native-vector-icons/Feather';
-import {authentication} from '../api/firebase';
-import {db} from '../api/firebase';
-import {
-  createUserWithEmailAndPassword,
-  setPersistence,
-  signInWithEmailAndPassword,
-  signOut,
-} from '@firebase/auth';
-import {collection, getDoc, setDoc, doc, addDoc} from 'firebase/firestore/lite';
-import useAuthentication from '../hooks/useAuthentication';
 import {withNavigation} from 'react-navigation';
 import {AuthContext} from '../navigation/AuthProvider';
+import Header from '../components/Header';
 
 var {Platform} = React;
 
@@ -36,15 +27,10 @@ const HomeScreen = ({navigation}) => {
   console.log(user);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.text}>{user}</Text>
-
-      {/* <Text>Logged in:</Text>
-       <Text>{uiduser}</Text> 
-       <Text>Username: {userName}</Text>
-      <Text>Email: {email} </Text>  */}
       <Button title="Sign out" onPress={() => logout()} />
-    </View>
+    </ScrollView>
   );
 };
 
@@ -54,6 +40,7 @@ const styles = StyleSheet.create({
     marginLeft: Platform.OS === 'ios' ? 10 : null,
   },
   text: {
+    marginTop: 30,
     color: '#000000',
   },
 });
