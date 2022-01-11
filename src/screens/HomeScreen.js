@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Switch,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import Input from '../components/Input';
 import ButtonAuthentication from '../components/ButtonAuthentication';
@@ -16,6 +17,11 @@ import Feather from 'react-native-vector-icons/Feather';
 import {withNavigation} from 'react-navigation';
 import {AuthContext} from '../navigation/AuthProvider';
 import Header from '../components/Header';
+import UpcomingMatchCard from '../components/UpcomingMatchCard';
+import NewMatchCard from '../components/NewMatchCard';
+import {db} from '../api/firebase';
+import {collection, getDoc, setDoc, doc, addDoc} from 'firebase/firestore/lite';
+import {firebase} from '@react-native-firebase/firestore';
 
 var {Platform} = React;
 
@@ -26,22 +32,96 @@ const HomeScreen = ({navigation}) => {
   console.log('HomeScreen');
   console.log(user);
 
+  const docRef = doc(db, 'users', user);
+  const docSnap = getDoc(docRef);
+
+  if (docSnap) {
+    console.log('Document data:', docSnap);
+  } else {
+    // doc.data() will be undefined in this case
+    console.log('No such document!');
+  }
+  const name = 'Stefania';
+  const [games, setGames] = useState([
+    {
+      userName: 'Klara Markovitz',
+      level: 'Intermediar',
+      profilePicture: require('../assets/profilePicture2.jpg'),
+      location: 'Baza Sportiva Nr 2, Timisoara',
+      date: '13 Dec, 13:00 pm',
+      id: '1',
+    },
+    {
+      userName: 'Klara Markovitz',
+      level: 'Intermediar',
+      profilePicture: require('../assets/profilePicture2.jpg'),
+      location: 'Baza Sportiva Nr 2, Timisoara',
+      date: '13 Dec, 13:00 pm',
+      id: '2',
+    },
+    {
+      userName: 'Klara Markovitz',
+      level: 'Intermediar',
+      profilePicture: require('../assets/profilePicture2.jpg'),
+      location: 'Baza Sportiva Nr 2, Timisoara',
+      date: '13 Dec, 13:00 pm',
+      id: '3',
+    },
+  ]);
+
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.text}>{user}</Text>
-      <Button title="Sign out" onPress={() => logout()} />
-    </ScrollView>
+    <View style={styles.container}>
+      <FlatList
+        ListHeaderComponent={
+          <>
+            <Text style={styles.greetingText}>Hi, {name}</Text>
+            {/* <Text style={styles.text}>{user}</Text> */}
+            <UpcomingMatchCard />
+            <View style={{marginTop: 20}}>
+              <Text style={styles.upcomingMatchesText}>
+                Let's find new matches
+              </Text>
+            </View>
+          </>
+        }
+        nestedScrollEnabled={true}
+        keyExtractor={item => item.id}
+        data={games}
+        renderItem={({item}) => (
+          <NewMatchCard
+            userName={item.userName}
+            level={item.level}
+            profilePicture={item.profilePicture}
+            location={item.location}
+            date={item.date}
+          />
+        )}
+        ListFooterComponent={
+          <>
+            <View style={{marginTop: 70}}></View>
+          </>
+        }
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    padding: 20,
     marginTop: Platform.OS === 'ios' ? 50 : null,
     marginLeft: Platform.OS === 'ios' ? 10 : null,
   },
-  text: {
-    marginTop: 30,
+  greetingText: {
+    marginTop: 20,
     color: '#000000',
+    fontWeight: '600',
+    fontSize: 25,
+  },
+  upcomingMatchesText: {
+    color: '#767676',
+    fontSize: 17,
   },
 });
 

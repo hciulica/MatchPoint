@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   currentlocationCity: {
     marginLeft: 5,
     color: '#323232',
+    fontWeight: '500',
   },
   profilePicture: {
     height: 50,
