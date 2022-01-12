@@ -15,6 +15,7 @@ import GenerateGameScreen from '../screens/GenerateGameScreen';
 import OverviewScreen from '../screens/OverviewScreen';
 import MessagingScreen from '../screens/MessagingScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import Header from '../components/Header';
 
 const fullScreenWidth = Dimensions.get('window').width;
 
@@ -55,7 +56,12 @@ const Navigation = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          header: () => null,
+          headerStyle: {
+            backgroundColor: 'transparent',
+            elevation: 0,
+          },
+          headerTitle: () => <Header />,
+
           tabBarIcon: ({focused}) => (
             <View>
               <Image
@@ -75,7 +81,12 @@ const Navigation = () => {
         name="Message"
         component={MessagingScreen}
         options={{
-          header: () => null,
+          headerStyle: {
+            backgroundColor: 'transparent',
+            elevation: 0,
+          },
+          headerTitle: () => <Header />,
+
           tabBarIcon: ({focused}) => (
             <View>
               <Image
@@ -96,7 +107,12 @@ const Navigation = () => {
         name="GenerateGame"
         component={GenerateGameScreen}
         options={{
-          header: () => null,
+          headerStyle: {
+            backgroundColor: 'transparent',
+            elevation: 0,
+          },
+          headerTitle: () => <Header />,
+
           tabBarIcon: ({focused}) => (
             <Image
               source={require('../assets/plus.png')}
@@ -116,7 +132,12 @@ const Navigation = () => {
         name="Overwiew"
         component={OverviewScreen}
         options={{
-          header: () => null,
+          headerStyle: {
+            backgroundColor: 'transparent',
+            elevation: 0,
+          },
+          headerTitle: () => <Header />,
+
           tabBarIcon: ({focused}) => (
             <View>
               <Image
@@ -136,7 +157,12 @@ const Navigation = () => {
         name="SettingsScreen"
         component={SettingsScreen}
         options={{
-          header: () => null,
+          headerStyle: {
+            backgroundColor: 'transparent',
+            elevation: 0,
+          },
+          headerTitle: () => <Header />,
+
           tabBarIcon: ({focused}) => (
             <View>
               <Image

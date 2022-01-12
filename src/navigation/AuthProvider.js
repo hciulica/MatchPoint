@@ -21,6 +21,7 @@ import {} from 'firebase/auth';
 const setUserFirestore = (usernamefirestore, uidfirestore) => {
   setDoc(doc(db, 'users', uidfirestore), {
     name: usernamefirestore,
+    uid: uidfirestore,
   });
 };
 export const AuthContext = createContext();
