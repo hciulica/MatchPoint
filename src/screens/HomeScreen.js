@@ -20,7 +20,14 @@ import Header from '../components/Header';
 import UpcomingMatchCard from '../components/UpcomingMatchCard';
 import NewMatchCard from '../components/NewMatchCard';
 import {db} from '../api/firebase';
-import {collection, getDoc, setDoc, doc, addDoc} from 'firebase/firestore/lite';
+import {
+  collection,
+  getDoc,
+  setDoc,
+  doc,
+  addDoc,
+  getDocs,
+} from 'firebase/firestore/lite';
 import {firebase} from '@react-native-firebase/firestore';
 
 var {Platform} = React;
@@ -29,19 +36,30 @@ const HomeScreen = ({navigation}) => {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const {user, logout} = useContext(AuthContext);
-  console.log('HomeScreen');
+
   console.log(user);
+  // const getData = async () => {
+  //   const userCol = collection(db, 'users');
+  //   const usersSnapshot = await getDocs(userCol);
+  //   const userList = usersSnapshot.docs.map(doc => doc.data());
 
-  const docRef = doc(db, 'users', user);
-  const docSnap = getDoc(docRef);
+  //   console.log(userList);
+  // };
 
-  if (docSnap) {
-    console.log('Document data:', docSnap);
-  } else {
-    // doc.data() will be undefined in this case
-    console.log('No such document!');
-  }
-  const name = 'Stefania';
+  // getData();
+  const setName = async id => {
+    const userSnapshot = await getDoc(doc(db, 'users', id));
+    if (userSnapshot.exists()) {
+      const name = userSnapshot.data().name;
+      setUserName(name);
+    } else {
+      console.log("User dosen't exist");
+    }
+  };
+  useEffect(() => {
+    setName(user);
+  }, []);
+
   const [games, setGames] = useState([
     {
       userName: 'Klara Markovitz',
@@ -74,7 +92,7 @@ const HomeScreen = ({navigation}) => {
       <FlatList
         ListHeaderComponent={
           <>
-            <Text style={styles.greetingText}>Hi, {name}</Text>
+            <Text style={styles.greetingText}>Hi, {userName}</Text>
             {/* <Text style={styles.text}>{user}</Text> */}
             <UpcomingMatchCard />
             <View style={{marginTop: 20}}>
