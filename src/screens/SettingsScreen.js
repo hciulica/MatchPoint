@@ -10,7 +10,6 @@ import {
   ScrollView,
 } from 'react-native';
 import Input from '../components/Input';
-import ButtonAuthentication from '../components/ButtonAuthentication';
 import TextButton from '../components/TextButton';
 import Feather from 'react-native-vector-icons/Feather';
 import {withNavigation} from 'react-navigation';

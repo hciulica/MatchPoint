@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 import Input from '../components/Input';
-import ButtonAuthentication from '../components/ButtonAuthentication';
+import GeneralButton from '../components/GeneralButton';
 import TextButton from '../components/TextButton';
 import Feather from 'react-native-vector-icons/Feather';
 import {withNavigation} from 'react-navigation';
@@ -54,9 +54,11 @@ const RegisterScreen = ({navigation, iconshow}) => {
         onChangeText={newValue => setcPassword(newValue)}
       />
 
-      <ButtonAuthentication
+      <GeneralButton
         title={'Register'}
-        onPress={() => handleSignUp(email, password, username, cpassword)}
+        onPress={() =>
+          handleSignUp(email, password, username, cpassword, 'intermediar')
+        }
       />
       <TextButton
         containerStyle={styles.registerContainer}

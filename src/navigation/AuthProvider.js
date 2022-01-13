@@ -18,22 +18,29 @@ import {
 import useAuthentication from '../hooks/useAuthentication';
 import {} from 'firebase/auth';
 
-const setUserFirestore = (usernamefirestore, uidfirestore) => {
+const setUserFirestore = (usernamefirestore, uidfirestore, level) => {
   setDoc(doc(db, 'users', uidfirestore), {
     name: usernamefirestore,
     uid: uidfirestore,
+    level: level,
   });
 };
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
+  const [userName, setUserName] = useState(null);
+  const [userLevel, setUserLevel] = useState(null);
 
   return (
     <AuthContext.Provider
       value={{
         user,
         setUser,
+        userName,
+        setUserName,
+        userLevel,
+        setUserLevel,
         handleLogin: (email, password) => {
           signInWithEmailAndPassword(authentication, email.trim(), password)
             .then(re => {
@@ -41,7 +48,7 @@ export const AuthProvider = ({children}) => {
             })
             .catch(error => alert(error.message));
         },
-        handleSignUp: (email, password, username, cpassword) => {
+        handleSignUp: (email, password, username, cpassword, level) => {
           if (password !== cpassword) {
             alert('Passwords do not match.');
           } else {
@@ -53,7 +60,9 @@ export const AuthProvider = ({children}) => {
               .then(re => {
                 console.log(re);
                 const user = re.user;
-                setUserFirestore(username, user.uid);
+                setUserName(username);
+                setUserLevel(level);
+                setUserFirestore(username, user.uid, level);
               })
               .catch((error, re) => {
                 alert(error.message);
