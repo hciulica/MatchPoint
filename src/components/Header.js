@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 
-const Header = ({pictureSource, cityLocation}) => {
+const Header = ({pictureSource, loactionvisible, cityLocation, pageTitle}) => {
   return (
     <View style={styles.header}>
       <Image
@@ -10,15 +10,23 @@ const Header = ({pictureSource, cityLocation}) => {
         style={styles.logo}
       />
       <View>
-        <Text style={styles.currentlocation}>Current Location</Text>
-        <View style={styles.locationView}>
-          <Image
-            source={require('../assets/locationPin.png')}
-            resizeMode="contain"
-            style={styles.locationPin}
-          />
-          <Text style={styles.currentlocationCity}>Timisoara</Text>
-        </View>
+        {loactionvisible ? (
+          <>
+            <Text style={styles.currentlocation}>Current Location</Text>
+            <View style={styles.locationView}>
+              <Image
+                source={require('../assets/locationPin.png')}
+                resizeMode="contain"
+                style={styles.locationPin}
+              />
+              <Text style={styles.currentlocationCity}>Timisoara</Text>
+            </View>
+          </>
+        ) : (
+          <>
+            <Text style={styles.pageTitle}>{pageTitle}</Text>
+          </>
+        )}
       </View>
       <Image
         source={require('../assets/profilePicture.jpg')}
@@ -65,6 +73,10 @@ const styles = StyleSheet.create({
     marginTop: 3,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  pageTitle: {
+    color: '#B7B7B7',
+    fontSize: 16,
   },
 });
 

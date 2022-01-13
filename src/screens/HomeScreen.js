@@ -11,7 +11,7 @@ import {
   FlatList,
 } from 'react-native';
 import Input from '../components/Input';
-import ButtonAuthentication from '../components/ButtonAuthentication';
+import GeneralButton from '../components/GeneralButton';
 import TextButton from '../components/TextButton';
 import Feather from 'react-native-vector-icons/Feather';
 import {withNavigation} from 'react-navigation';
@@ -19,6 +19,7 @@ import {AuthContext} from '../navigation/AuthProvider';
 import Header from '../components/Header';
 import UpcomingMatchCard from '../components/UpcomingMatchCard';
 import NewMatchCard from '../components/NewMatchCard';
+import DatePicker from 'react-native-date-picker';
 import {db} from '../api/firebase';
 import {
   collection,
@@ -27,65 +28,85 @@ import {
   doc,
   addDoc,
   getDocs,
+  where,
+  query,
+  toDate,
+  orderBy,
 } from 'firebase/firestore/lite';
 import {firebase} from '@react-native-firebase/firestore';
 
 var {Platform} = React;
 
 const HomeScreen = ({navigation}) => {
-  const [userName, setUserName] = useState('');
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
   const [email, setEmail] = useState('');
-  const {user, logout} = useContext(AuthContext);
+  const [games, setGames] = useState(null);
+  const {user, logout, userName, setUserName, userLevel, setUserLevel} =
+    useContext(AuthContext);
 
-  console.log(user);
-  // const getData = async () => {
-  //   const userCol = collection(db, 'users');
-  //   const usersSnapshot = await getDocs(userCol);
-  //   const userList = usersSnapshot.docs.map(doc => doc.data());
+  //get games
+  const fetchGames = async () => {
+    const list = [];
+    const q = query(collection(db, 'games'), where('level', '==', userLevel));
 
-  //   console.log(userList);
-  // };
-
-  // getData();
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+      const {userUid, userName, level, date} = doc.data();
+      const date2 = date ? date.toDate() : null;
+      if (userUid != user) {
+        //don't display matches posted by the current user
+        list.push({
+          id: doc.id,
+          userName,
+          date:
+            date2.getDate() +
+            ' ' +
+            monthNames[date2.getMonth()].substring(0, 3) +
+            ' ' +
+            date2.getFullYear() +
+            ', ' +
+            date2.getHours() +
+            ':' +
+            date2.getMinutes(),
+          level,
+          profilePicture: require('../assets/profilePicture2.jpg'),
+          location: 'Baza Sportiva Nr 2, Timisoara',
+        });
+      }
+    });
+    setGames(list);
+  };
   const setName = async id => {
     const userSnapshot = await getDoc(doc(db, 'users', id));
     if (userSnapshot.exists()) {
       const name = userSnapshot.data().name;
-      setUserName(name);
+      await setUserName(name);
+      await setUserLevel(userSnapshot.data().level);
     } else {
       console.log("User dosen't exist");
     }
   };
   useEffect(() => {
-    setName(user);
+    async function fetchMyData() {
+      setName(user);
+      fetchGames();
+      console.log(user);
+    }
+    fetchMyData();
   }, []);
-
-  const [games, setGames] = useState([
-    {
-      userName: 'Klara Markovitz',
-      level: 'Intermediar',
-      profilePicture: require('../assets/profilePicture2.jpg'),
-      location: 'Baza Sportiva Nr 2, Timisoara',
-      date: '13 Dec, 13:00 pm',
-      id: '1',
-    },
-    {
-      userName: 'Klara Markovitz',
-      level: 'Intermediar',
-      profilePicture: require('../assets/profilePicture2.jpg'),
-      location: 'Baza Sportiva Nr 2, Timisoara',
-      date: '13 Dec, 13:00 pm',
-      id: '2',
-    },
-    {
-      userName: 'Klara Markovitz',
-      level: 'Intermediar',
-      profilePicture: require('../assets/profilePicture2.jpg'),
-      location: 'Baza Sportiva Nr 2, Timisoara',
-      date: '13 Dec, 13:00 pm',
-      id: '3',
-    },
-  ]);
 
   return (
     <View style={styles.container}>
@@ -93,7 +114,6 @@ const HomeScreen = ({navigation}) => {
         ListHeaderComponent={
           <>
             <Text style={styles.greetingText}>Hi, {userName}</Text>
-            {/* <Text style={styles.text}>{user}</Text> */}
             <UpcomingMatchCard />
             <View style={{marginTop: 20}}>
               <Text style={styles.upcomingMatchesText}>

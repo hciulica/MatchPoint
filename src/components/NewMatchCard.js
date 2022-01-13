@@ -1,7 +1,14 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 
-const NewMatchCard = ({userName, level, profilePicture, location, date}) => {
+const NewMatchCard = ({
+  item,
+  userName,
+  level,
+  profilePicture,
+  location,
+  date,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.flexView}>
@@ -42,8 +49,7 @@ const NewMatchCard = ({userName, level, profilePicture, location, date}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 10,
-    marginTop: 15,
+    marginTop: 20,
     backgroundColor: '#fff',
     borderRadius: 12,
     padding: 15,

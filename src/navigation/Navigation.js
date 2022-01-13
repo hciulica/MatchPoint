@@ -60,7 +60,7 @@ const Navigation = () => {
             backgroundColor: 'transparent',
             elevation: 0,
           },
-          headerTitle: () => <Header />,
+          headerTitle: () => <Header loactionvisible={true} />,
 
           tabBarIcon: ({focused}) => (
             <View>
@@ -85,7 +85,7 @@ const Navigation = () => {
             backgroundColor: 'transparent',
             elevation: 0,
           },
-          headerTitle: () => <Header />,
+          headerTitle: () => <Header loactionvisible={true} />,
 
           tabBarIcon: ({focused}) => (
             <View>
@@ -111,7 +111,9 @@ const Navigation = () => {
             backgroundColor: 'transparent',
             elevation: 0,
           },
-          headerTitle: () => <Header />,
+          headerTitle: () => (
+            <Header loactionvisible={false} pageTitle={'Generate new game'} />
+          ),
 
           tabBarIcon: ({focused}) => (
             <Image
@@ -136,7 +138,7 @@ const Navigation = () => {
             backgroundColor: 'transparent',
             elevation: 0,
           },
-          headerTitle: () => <Header />,
+          headerTitle: () => <Header loactionvisible={true} />,
 
           tabBarIcon: ({focused}) => (
             <View>
@@ -161,7 +163,7 @@ const Navigation = () => {
             backgroundColor: 'transparent',
             elevation: 0,
           },
-          headerTitle: () => <Header />,
+          headerTitle: () => <Header loactionvisible={true} />,
 
           tabBarIcon: ({focused}) => (
             <View>
