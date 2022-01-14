@@ -61,7 +61,6 @@ export const AuthProvider = ({children}) => {
                 console.log(re);
                 const user = re.user;
                 setUserName(username);
-                setUserLevel(level);
                 setUserFirestore(username, user.uid, level);
               })
               .catch((error, re) => {

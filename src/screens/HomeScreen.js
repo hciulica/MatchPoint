@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, Component} from 'react';
 import {
   Text,
   TextInput,
@@ -32,6 +32,7 @@ import {
   query,
   toDate,
   orderBy,
+  limit,
 } from 'firebase/firestore/lite';
 import {firebase} from '@react-native-firebase/firestore';
 
@@ -54,58 +55,92 @@ const HomeScreen = ({navigation}) => {
   ];
   const [email, setEmail] = useState('');
   const [games, setGames] = useState(null);
-  const {user, logout, userName, setUserName, userLevel, setUserLevel} =
-    useContext(AuthContext);
+  const [userLevel, setUserLevel] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [upcomingName, setupcomingName] = useState(null);
+  const [upcomingLevel, setupcomingLevel] = useState(null);
+  const [upcomingDate, setupcomingDate] = useState(null);
+  const {user, logout, userName, setUserName} = useContext(AuthContext);
 
   //get games
+  const upcominMatch = async () => {
+    const subColRef = query(
+      collection(db, 'users', user, 'games'),
+      orderBy('date', 'asc'),
+      limit(1),
+    );
+    const querySnapshot = await getDocs(subColRef);
+    querySnapshot.forEach(doc => {
+      const {userName, level, date} = doc.data();
+      setupcomingName(userName);
+      setupcomingLevel(level);
+      setupcomingDate(date);
+    });
+  };
   const fetchGames = async () => {
     const list = [];
-    const q = query(collection(db, 'games'), where('level', '==', userLevel));
+    console.log(userLevel);
+    const q = query(
+      collection(db, 'games'),
+
+      where('level', '==', userLevel),
+    );
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach(doc => {
-      const {userUid, userName, level, date} = doc.data();
+      const {userUid, userName, level, date, player} = doc.data();
       const date2 = date ? date.toDate() : null;
       if (userUid != user) {
+        if (!player) {
+          list.push({
+            userUid: userUid,
+            docid: doc.id,
+            id: doc.id,
+            userName,
+            date:
+              date2.getDate() +
+              ' ' +
+              monthNames[date2.getMonth()].substring(0, 3) +
+              ' ' +
+              date2.getFullYear() +
+              ', ' +
+              date2.getHours() +
+              ':' +
+              date2.getMinutes(),
+            level,
+            profilePicture: require('../assets/profilePicture2.jpg'),
+            location: 'Baza Sportiva Nr 2, Timisoara',
+          });
+        }
         //don't display matches posted by the current user
-        list.push({
-          id: doc.id,
-          userName,
-          date:
-            date2.getDate() +
-            ' ' +
-            monthNames[date2.getMonth()].substring(0, 3) +
-            ' ' +
-            date2.getFullYear() +
-            ', ' +
-            date2.getHours() +
-            ':' +
-            date2.getMinutes(),
-          level,
-          profilePicture: require('../assets/profilePicture2.jpg'),
-          location: 'Baza Sportiva Nr 2, Timisoara',
-        });
       }
     });
     setGames(list);
+
+    if (loading) {
+      setLoading(false);
+    }
   };
   const setName = async id => {
     const userSnapshot = await getDoc(doc(db, 'users', id));
     if (userSnapshot.exists()) {
       const name = userSnapshot.data().name;
+      const lvl = userSnapshot.data().level;
+
       await setUserName(name);
-      await setUserLevel(userSnapshot.data().level);
+      await setUserLevel(lvl);
     } else {
       console.log("User dosen't exist");
     }
   };
+
   useEffect(() => {
-    async function fetchMyData() {
+    (async () => {
       setName(user);
+      upcominMatch();
       fetchGames();
-      console.log(user);
-    }
-    fetchMyData();
+      console.log('rrsssffr');
+    })();
   }, []);
 
   return (
@@ -114,7 +149,11 @@ const HomeScreen = ({navigation}) => {
         ListHeaderComponent={
           <>
             <Text style={styles.greetingText}>Hi, {userName}</Text>
-            <UpcomingMatchCard />
+            <UpcomingMatchCard
+              name={upcomingName}
+              level={upcomingLevel}
+              data={upcomingDate}
+            />
             <View style={{marginTop: 20}}>
               <Text style={styles.upcomingMatchesText}>
                 Let's find new matches
@@ -127,6 +166,9 @@ const HomeScreen = ({navigation}) => {
         data={games}
         renderItem={({item}) => (
           <NewMatchCard
+            visible={true}
+            userUid={item.userUid}
+            docid={item.docid}
             userName={item.userName}
             level={item.level}
             profilePicture={item.profilePicture}
