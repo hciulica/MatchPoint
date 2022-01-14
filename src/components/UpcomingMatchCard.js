@@ -1,7 +1,13 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 
-const UpcomingMatchCard = ({pictureSource, cityLocation}) => {
+const UpcomingMatchCard = ({
+  pictureSource,
+  cityLocation,
+  name,
+  level,
+  data,
+}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.upcomingMatchesText}>Upcoming Matches</Text>
@@ -13,8 +19,8 @@ const UpcomingMatchCard = ({pictureSource, cityLocation}) => {
             style={styles.profilePicture}
           />
           <View>
-            <Text style={styles.name}>Horia Ciuclia</Text>
-            <Text style={styles.level}>Intermediar</Text>
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.level}>{level}</Text>
           </View>
           <Image
             source={require('../assets/message.png')}
@@ -37,7 +43,7 @@ const UpcomingMatchCard = ({pictureSource, cityLocation}) => {
             resizeMode="contain"
             style={styles.watchImage}
           />
-          <Text style={styles.dateText}>Sunday, 21 November, 09.00 am</Text>
+          <Text style={styles.dateText}>{data}</Text>
         </View>
       </View>
     </View>

@@ -1,14 +1,44 @@
-import React from 'react';
+import React, {useState, useEffect, useContext, Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import {db} from '../api/firebase';
+import {
+  collection,
+  getDoc,
+  setDoc,
+  doc,
+  addDoc,
+  getDocs,
+  where,
+  query,
+  toDate,
+  orderBy,
+  update,
+  updateDoc,
+} from 'firebase/firestore/lite';
+import {AuthContext} from '../navigation/AuthProvider';
 
 const NewMatchCard = ({
+  visible,
+  userUid,
   item,
   userName,
   level,
   profilePicture,
   location,
   date,
+  docid,
 }) => {
+  const {user} = useContext(AuthContext);
+
+  const fetchGames = async () => {
+    const subColRef = collection(db, 'users', user, 'games');
+    const qSnap = await getDocs(subColRef);
+    console.log('data');
+    qSnap.forEach(doc => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, ' => ', doc.data());
+    });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.flexView}>
@@ -26,6 +56,7 @@ const NewMatchCard = ({
           style={styles.messageicon}
         />
       </View>
+
       <View style={{...styles.flexView, marginTop: 23, alignItems: 'center'}} s>
         <Image
           source={require('../assets/locationPin.png')}
@@ -34,13 +65,47 @@ const NewMatchCard = ({
         />
         <Text style={styles.location}>{location}</Text>
       </View>
-      <View style={styles.dateView}>
-        <Image
-          source={require('../assets/watch.png')}
-          resizeMode="contain"
-          style={styles.watchImage}
-        />
-        <Text style={styles.dateText}>{date}</Text>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={styles.dateView}>
+          <Image
+            source={require('../assets/watch.png')}
+            resizeMode="contain"
+            style={styles.watchImage}
+          />
+          <Text style={styles.dateText}>{date}</Text>
+        </View>
+        {visible ? (
+          <>
+            <TouchableOpacity
+              onPress={() => {
+                updateDoc(doc(db, 'games', docid), {
+                  player: user,
+                });
+                addDoc(collection(db, 'users', user, 'games'), {
+                  userUid: userUid,
+                  userName: userName,
+                  date: date,
+                  level: level,
+                  player: user,
+                });
+                addDoc(collection(db, 'users', userUid, 'games'), {
+                  userUid: userUid,
+                  userName: userName,
+                  date: date,
+                  level: level,
+                  player: user,
+                });
+              }}>
+              <Image
+                source={require('../assets/attend.png')}
+                resizeMode="contain"
+                style={styles.attendImage}
+              />
+            </TouchableOpacity>
+          </>
+        ) : (
+          <></>
+        )}
       </View>
     </View>
   );
@@ -112,6 +177,11 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     color: '#B4B4B4',
     fontSize: 14,
+  },
+  attendImage: {
+    tintColor: '#B4B4B4',
+    height: 25,
+    width: 25,
   },
 });
 
