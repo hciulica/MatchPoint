@@ -139,7 +139,7 @@ const HomeScreen = ({navigation}) => {
       setName(user);
       upcominMatch();
       fetchGames();
-      console.log('rrsssffr');
+      console.log('rrrrr');
     })();
   }, []);
 

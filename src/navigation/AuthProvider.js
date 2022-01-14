@@ -31,6 +31,9 @@ export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const [userName, setUserName] = useState(null);
   const [userLevel, setUserLevel] = useState(null);
+  const [useremail, setuseremail] = useState(null);
+  const [userpassword, setuserpassword] = useState(null);
+  const [usercpassword, setcpassword] = useState(null);
 
   return (
     <AuthContext.Provider
@@ -41,6 +44,12 @@ export const AuthProvider = ({children}) => {
         setUserName,
         userLevel,
         setUserLevel,
+        useremail,
+        setuseremail,
+        userpassword,
+        setuserpassword,
+        usercpassword,
+        setcpassword,
         handleLogin: (email, password) => {
           signInWithEmailAndPassword(authentication, email.trim(), password)
             .then(re => {
@@ -48,20 +57,19 @@ export const AuthProvider = ({children}) => {
             })
             .catch(error => alert(error.message));
         },
-        handleSignUp: (email, password, username, cpassword, level) => {
-          if (password !== cpassword) {
+        handleSignUp: level => {
+          if (userpassword !== usercpassword) {
             alert('Passwords do not match.');
           } else {
             createUserWithEmailAndPassword(
               authentication,
-              email.trim(),
-              password,
+              useremail.trim(),
+              userpassword,
             )
               .then(re => {
                 console.log(re);
                 const user = re.user;
-                setUserName(username);
-                setUserFirestore(username, user.uid, level);
+                setUserFirestore(userName, user.uid, level);
               })
               .catch((error, re) => {
                 alert(error.message);
