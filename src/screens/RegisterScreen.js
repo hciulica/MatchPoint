@@ -15,15 +15,25 @@ import TextButton from '../components/TextButton';
 import Feather from 'react-native-vector-icons/Feather';
 import {withNavigation} from 'react-navigation';
 import {AuthContext} from '../navigation/AuthProvider';
+import ChooseLevelScreen from './ChooseLevelScreen';
 var {Platform} = React;
 
 const RegisterScreen = ({navigation, iconshow}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [cpassword, setcPassword] = useState('');
-  const [username, setUsername] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [cpassword, setcPassword] = useState('');
+  // const [username, setUsername] = useState('');
   const [uidUser, setuidUser] = useState('');
-  const {handleSignUp} = useContext(AuthContext);
+  const {
+    handleSignUp,
+    useremail,
+    setuseremail,
+    userpassword,
+    setuserpassword,
+    usercpassword,
+    setcpassword,
+    setUserName,
+  } = useContext(AuthContext);
 
   return (
     <ScrollView style={styles.container}>
@@ -33,32 +43,32 @@ const RegisterScreen = ({navigation, iconshow}) => {
         title="YOUR NAME"
         passwordfield={false}
         iconshow={false}
-        onChangeText={newValue => setUsername(newValue)}
+        onChangeText={newValue => setUserName(newValue)}
       />
       <Input
         title="EMAIL"
         passwordfield={false}
         iconshow={false}
-        onChangeText={newValue => setEmail(newValue)}
+        onChangeText={newValue => setuseremail(newValue)}
       />
-
       <Input
         title="PASSWORD"
         passwordfield={true}
         iconshow={true}
-        onChangeText={newValue => setPassword(newValue)}
+        onChangeText={newValue => setuserpassword(newValue)}
       />
+
       <Input
         title="CONFIRM PASSWORD"
         iconshow={false}
-        onChangeText={newValue => setcPassword(newValue)}
+        onChangeText={newValue => setcpassword(newValue)}
       />
-
       <GeneralButton
         title={'Register'}
-        onPress={() =>
-          handleSignUp(email, password, username, cpassword, 'intermediar')
-        }
+        // onPress={() =>
+        //   handleSignUp(email, password, username, cpassword, 'intermediar')
+        // }
+        onPress={() => navigation.navigate('ChooseLevelScreen')}
       />
       <TextButton
         containerStyle={styles.registerContainer}
